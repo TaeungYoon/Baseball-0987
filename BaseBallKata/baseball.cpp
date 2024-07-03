@@ -9,6 +9,7 @@ struct GuessResult {
 
 class Baseball {
 public:
+	const int MAX_TRIALS = 3;
 	explicit Baseball(const string& question) : question(question){
 
 	}
@@ -17,39 +18,37 @@ public:
 		
 		int strikes = getStrike(guessNumber);
 		int balls = getBalls(guessNumber);
-		bool solved = strikes == 3 ? true : false;
+		bool solved = getSolved(strikes);
 
 		return { solved, strikes, balls };
+	}
+	
+private:
+	bool getSolved(int strikes) {
+		return strikes == MAX_TRIALS ? true : false;
 	}
 	int getBalls(const std::string& guessNumber)
 	{
 		int balls = 0;
-		if (guessNumber[0] != question[0]) {
-			if (guessNumber[0] == question[1])
-				balls++;
-			if (guessNumber[0] == question[2])
-				balls++;
+		for (int numberIndex = 0; numberIndex < MAX_TRIALS; numberIndex++) {
+			if (guessNumber[numberIndex] == question[numberIndex])
+				continue;
+
+			for (int questionIndex = 0; questionIndex < MAX_TRIALS; questionIndex++) {
+				if (numberIndex == questionIndex)
+					continue;
+				if (guessNumber[numberIndex] == question[questionIndex])
+					balls++;
+			}
+
 		}
 
-		if (guessNumber[1] != question[1]) {
-			if (guessNumber[1] == question[0])
-				balls++;
-			if (guessNumber[1] == question[2])
-				balls++;
-		}
-
-		if (guessNumber[2] != question[2]) {
-			if (guessNumber[2] == question[0])
-				balls++;
-			if (guessNumber[2] == question[1])
-				balls++;
-		}
 		return balls;
 	}
 	int getStrike(const std::string& guessNumber)
 	{
 		int strikes = 0;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < MAX_TRIALS; i++) {
 			if (guessNumber[i] == question[i]) {
 				strikes++;
 			}
@@ -58,7 +57,7 @@ public:
 	}
 	void assertIllegalArgument(const std::string& guessNumber)
 	{
-		if (guessNumber.length() != 3) {
+		if (guessNumber.length() != MAX_TRIALS) {
 			throw length_error("Must be three letters.");
 		}
 
@@ -78,6 +77,6 @@ public:
 			|| guessNumber[0] == guessNumber[2]
 			|| guessNumber[1] == guessNumber[2];
 	}
-private:
+
 	string question;
 };
