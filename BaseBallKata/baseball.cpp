@@ -14,10 +14,26 @@ public:
 	}
 	GuessResult guess(const string& guessNumber) {
 		assertIllegalArgument(guessNumber);
-		if (question == question) {
-			return { true, 3, 0 };
+		
+		int strikes = getStrike(guessNumber);
+		if (guessNumber == question) {
+			return { true, strikes, 0 };
 		}
-		return { false, 0, 0 };
+		if (guessNumber == "129") {
+			return { false, strikes, 0 };
+		}
+
+		return { false, strikes, 0 };
+	}
+	int getStrike(const std::string& guessNumber)
+	{
+		int strikes = 0;
+		for (int i = 0; i < 3; i++) {
+			if (guessNumber[i] == question[i]) {
+				strikes++;
+			}
+		}
+		return strikes;
 	}
 	void assertIllegalArgument(const std::string& guessNumber)
 	{
