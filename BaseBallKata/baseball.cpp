@@ -16,17 +16,35 @@ public:
 		assertIllegalArgument(guessNumber);
 		
 		int strikes = getStrike(guessNumber);
-		if (guessNumber == question) {
-			return { true, strikes, 0 };
-		}
-		if (guessNumber == "129") {
-			return { false, strikes, 0 };
-		}
-		if (guessNumber == "321") {
-			return { false, 1, 2 };
+		int balls = getBalls(guessNumber);
+		bool solved = strikes == 3 ? true : false;
+
+		return { solved, strikes, balls };
+	}
+	int getBalls(const std::string& guessNumber)
+	{
+		int balls = 0;
+		if (guessNumber[0] != question[0]) {
+			if (guessNumber[0] == question[1])
+				balls++;
+			if (guessNumber[0] == question[2])
+				balls++;
 		}
 
-		return { false, strikes, 0 };
+		if (guessNumber[1] != question[1]) {
+			if (guessNumber[1] == question[0])
+				balls++;
+			if (guessNumber[1] == question[2])
+				balls++;
+		}
+
+		if (guessNumber[2] != question[2]) {
+			if (guessNumber[2] == question[0])
+				balls++;
+			if (guessNumber[2] == question[1])
+				balls++;
+		}
+		return balls;
 	}
 	int getStrike(const std::string& guessNumber)
 	{
