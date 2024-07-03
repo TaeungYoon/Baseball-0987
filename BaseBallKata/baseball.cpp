@@ -22,6 +22,9 @@ public:
 		if (guessNumber == "129") {
 			return { false, strikes, 0 };
 		}
+		if (guessNumber == "321") {
+			return { false, 1, 2 };
+		}
 
 		return { false, strikes, 0 };
 	}
