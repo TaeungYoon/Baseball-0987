@@ -1,3 +1,3 @@
 ### Baseball KATA
 ---
-Basedball TDD
+Basedball game TDD 
